@@ -1,22 +1,15 @@
-<?php get_header(); ?>
+<?php
+	get_header();
 
-<div class="wrap">
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
+	global $post;
+	$post_slug = $post->post_name;
 
-			<?php
-			/* Start the Loop */
-			while ( have_posts() ) : the_post();
+	$view = __DIR__."/_template/src/single-${post_slug}.pug";
+	$default = __DIR__."/_template/src/single.pug";
+	file_exists($view) ? $template = $view : $template = $default;
 
-				the_content();
+	while ( have_posts() ) : the_post();
+		Phug::displayFile($template);
+	endwhile;
 
-				get_template_part( 'template-parts/post/content', get_post_format() );
-
-			endwhile; // End of the loop.
-			?>
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
-</div><!-- .wrap -->
-
-<?php get_footer();
+	get_footer();

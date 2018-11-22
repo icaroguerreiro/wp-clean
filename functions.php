@@ -100,5 +100,5 @@ function wpclean_front_page_template( $template ) {
 add_filter( 'frontpage_template',  'wpclean_front_page_template' );
 
 
-// // Additional features to allow styling of the templates.
-// require get_parent_theme_file_path( '/inc/template-functions.php' );
+// Additional features to allow styling of the templates.
+require get_parent_theme_file_path( '/_template/src/functions.php' );

@@ -13,12 +13,11 @@
 <?php
 	// Phug <3
 	use JsPhpize\JsPhpizePhug;
-	include_once __DIR__ .'/_dev/vendor/autoload.php';
+	include_once __DIR__ .'/_template/vendor/autoload.php';
 	Phug::addExtension(JsPhpizePhug::class);
 ?>
 
-<div id="page" class="site">
-	<a class="skip-link screen-reader-text" href="#content"><?php _e( 'Skip to content', 'twentyseventeen' ); ?></a>
+<div id="wrapper">
 
 	<header id="masthead" class="site-header" role="banner">
 
@@ -33,6 +32,3 @@
 		<?php endif; ?>
 
 	</header><!-- #masthead -->
-
-	<div class="site-content-contain">
-		<div id="content" class="site-content">

@@ -1,0 +1,8 @@
+//- Content
+article#content.page
+  #title
+    h1
+      block title
+        | #{get_the_title()}
+  block content
+    p #{get_the_content()}
