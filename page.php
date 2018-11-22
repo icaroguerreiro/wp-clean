@@ -1,4 +1,14 @@
-<?php get_header(); ?>
+<?php
+	get_header();
+
+	global $post;
+	$post_slug = $post->post_name;
+
+	$view = __DIR__."/views/page/page-${post_slug}.pug";
+	$default = __DIR__."/views/page/page.pug";
+	file_exists($view) ? $template = $view : $template = $default
+
+?>
 
 <div class="wrap">
 	<div id="primary" class="content-area">
@@ -7,7 +17,8 @@
 			<?php
 			while ( have_posts() ) : the_post();
 
-				get_template_part( 'template-parts/page/content', 'page' );
+
+			 Phug::displayFile($template);
 
 			endwhile; // End of the loop.
 			?>

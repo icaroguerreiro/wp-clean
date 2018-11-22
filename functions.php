@@ -1,29 +1,5 @@
 <?php
-/**
- * Twenty Seventeen functions and definitions
- *
- * @link https://developer.wordpress.org/themes/basics/theme-functions/
- *
- * @package WordPress
- * @subpackage Twenty_Seventeen
- * @since 1.0
- */
-
-/**
- * Twenty Seventeen only works in WordPress 4.7 or later.
- */
-if ( version_compare( $GLOBALS['wp_version'], '4.7-alpha', '<' ) ) {
-	require get_template_directory() . '/inc/back-compat.php';
-	return;
-}
-
-/**
- * Sets up theme defaults and registers support for various WordPress features.
- *
- * Note that this function is hooked into the after_setup_theme hook, which
- * runs before the init hook. The init hook is too late for some features, such
- * as indicating support for post thumbnails.
- */
+// Sets up theme defaults and registers features
 function wpclean_setup() {
 
 	// Theme Supports
@@ -86,13 +62,6 @@ function wpclean_excerpt_more( $link ) {
 	);
 	return ' &hellip; ' . $link;
 }; add_filter( 'excerpt_more', 'wpclean_excerpt_more' );
-
-
-// Handles JavaScript detection.
-function wpclean_javascript_detection() {
-	echo "<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>\n";
-}; add_action( 'wp_head', 'wpclean_javascript_detection', 0 );
-
 
 // Add a pingback url auto-discovery header for singularly identifiable articles.
 function wpclean_pingback_header() {

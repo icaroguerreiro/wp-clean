@@ -1,0 +1,19 @@
+# Project
+/node_modules
+package-lock.json
+/vendor
+composer.lock
+
+# Yarn
+yarn-error.log
+yarn.lock
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Mac
+.DS_Store
+.Spotlight-V100
+.Trashes
+._*

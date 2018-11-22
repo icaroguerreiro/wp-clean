@@ -1,0 +1,6 @@
+{
+    "require": {
+        "phug/phug": "^0.3.2",
+        "js-phpize/js-phpize-phug": "^2.1"
+    }
+}
