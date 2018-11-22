@@ -101,4 +101,4 @@ add_filter( 'frontpage_template',  'wpclean_front_page_template' );
 
 
 // Additional features to allow styling of the templates.
-require get_parent_theme_file_path( '/_template/src/functions.php' );
+require get_parent_theme_file_path( '/src/functions.php' );

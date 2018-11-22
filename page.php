@@ -4,8 +4,8 @@
 	global $post;
 	$post_slug = $post->post_name;
 
-	$view = __DIR__."/_template/src/page-${post_slug}.pug";
-	$default = __DIR__."/_template/src/page.pug";
+	$view = __DIR__."/src/page-${post_slug}.pug";
+	$default = __DIR__."/src/page.pug";
 	file_exists($view) ? $template = $view : $template = $default;
 
 	while ( have_posts() ) : the_post();

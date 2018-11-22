@@ -13,7 +13,7 @@
 <?php
 	// Phug <3
 	use JsPhpize\JsPhpizePhug;
-	include_once __DIR__ .'/_template/vendor/autoload.php';
+	include_once __DIR__ .'/_engine/vendor/autoload.php';
 	Phug::addExtension(JsPhpizePhug::class);
 ?>
 
