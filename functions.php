@@ -73,20 +73,6 @@ function wpclean_pingback_header() {
 
 // Enqueue scripts and styles.
 function wpclean_scripts() {
-
-	// Theme stylesheet.
-	wp_enqueue_style( 'wpclean-style', get_stylesheet_uri() );
-
-	// Load the Internet Explorer 9 specific stylesheet, to fix display issues in the Customizer.
-	if ( is_customize_preview() ) {
-		wp_enqueue_style( 'wpclean-ie9', get_theme_file_uri( '/assets/css/ie9.css' ), array( 'wpclean-style' ), '1.0' );
-		wp_style_add_data( 'wpclean-ie9', 'conditional', 'IE 9' );
-	}
-
-	// Load the Internet Explorer 8 specific stylesheet.
-	wp_enqueue_style( 'wpclean-ie8', get_theme_file_uri( '/assets/css/ie8.css' ), array( 'wpclean-style' ), '1.0' );
-	wp_style_add_data( 'wpclean-ie8', 'conditional', 'lt IE 9' );
-
 	// Load the html5 shiv.
 	wp_enqueue_script( 'html5', get_theme_file_uri( '/assets/js/html5.js' ), array(), '3.7.3' );
 	wp_script_add_data( 'html5', 'conditional', 'lt IE 9' );
@@ -102,3 +88,9 @@ add_filter( 'frontpage_template',  'wpclean_front_page_template' );
 
 // Additional features to allow styling of the templates.
 require get_parent_theme_file_path( '/src/functions.php' );
+
+// Remove Emoji CSS
+remove_action('wp_head','print_emoji_detection_script', 7); 
+remove_action('admin_print_scripts','print_emoji_detection_script'); 
+remove_action('wp_print_styles','print_emoji_styles'); 
+remove_action('admin_print_styles','print_emoji_styles');
