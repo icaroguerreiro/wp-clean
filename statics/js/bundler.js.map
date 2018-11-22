@@ -1,0 +1,1 @@
+{"version":3,"sources":["helloworld.js"],"names":["name","console","log","concat"],"mappings":"aAAA,IAAMA,KAAO,QACbC,QAAQC,IAAR,aAAAC,OAAyBH,KAAzB,SAAsC","file":"bundler.js","sourcesContent":["const name = 'World'\r\nconsole.log(`%c-\"Hello ${name}!\" 👽`, \"font-size:1.5em;\")\r\n"]}

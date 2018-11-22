@@ -14,6 +14,7 @@
 
 	<style><?php @include 'statics/css/critical.css'; ?></style>
 	<?php wp_head(); ?>
+	<?php echo '<link rel="stylesheet" href="'.get_template_directory_uri().'/statics/css/style.css" type="text/css" media="all" />' ?>
 	<?php	Phug::displayFile(__DIR__."/src/_head.pug"); ?>
 </head>
 
