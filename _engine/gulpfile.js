@@ -37,6 +37,16 @@ gulp.task('app-css', () => {
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('../statics/css'))
     .on('error', (err) => console.log(err))
+  gulp.src('../src/core/css/admin.sass')
+    .pipe(sassGlob())
+    .pipe(sourcemaps.init())
+      .pipe(sass())
+      .pipe(autoprefixer())
+      .pipe(concat("admin.css"))
+      .pipe(cleanCSS( {level: {1: {compatibility: 'ie8', specialComments: 0}}} ))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('../statics/css'))
+    .on('error', (err) => console.log(err))
 })
 
 // app-js

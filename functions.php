@@ -85,10 +85,6 @@ function wpclean_front_page_template( $template ) {
 }
 add_filter( 'frontpage_template',  'wpclean_front_page_template' );
 
-
-// Additional features to allow styling of the templates.
-require get_parent_theme_file_path( '/src/functions.php' );
-
 // Remove Emoji CSS
 remove_action('wp_head','print_emoji_detection_script', 7); 
 remove_action('admin_print_scripts','print_emoji_detection_script'); 
@@ -113,102 +109,229 @@ function my_acf_settings_dir( $dir ) {
     return $dir;
 }; add_filter(__DIR__.'/_engine/plugins/acf/settings/dir', 'my_acf_settings_dir');
 
-// if ( ! has_filter( __DIR__.'/_engine/plugins/acf/settings/show_admin' ) ) {
-// 	add_filter(__DIR__.'/_engine/plugins/acf/settings/show_admin', '__return_false');
-// }
-
 include_once(__DIR__.'/_engine/plugins/acf/acf.php');
 
 // Required and Recommended Plugins
-// function wpclean_register_required_plugins() {
-// 	$plugins = array(
-// 		array(
-// 			'name'      => 'Custom Post Type UI',
-// 			'slug'      => 'custom-post-type-ui',
-// 			'required'  => false,
-// 		),
-// 		array(
-// 			'name'     => 'Advanced Custom Fields Pro',
-// 			'slug'     => 'acf-pro',
-// 			'source'   => __DIR__.'/_engine/plugins/advanced-custom-fields-pro.zip',
-// 			'required' => false,
-// 		),
-// 	);
-// 	$config = array(
-// 		'id'           => 'wpclean',                 // Unique ID for hashing notices for multiple instances of TGMPA.
-// 		'default_path' => '',                      // Default absolute path to bundled plugins.
-// 		'menu'         => 'tgmpa-install-plugins', // Menu slug.
-// 		'parent_slug'  => 'plugins.php',            // Parent menu slug.
-// 		'capability'   => 'manage_options',    // Capability needed to view plugin install page, should be a capability associated with the parent menu used.
-// 		'has_notices'  => true,                    // Show admin notices or not.
-// 		'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.
-// 		'dismiss_msg'  => '',                      // If 'dismissable' is false, this message will be output at top of nag.
-// 		'is_automatic' => false,                   // Automatically activate plugins after installation or not.
-// 		'message'      => '',                      // Message to output right before the plugins table.
-// 		'strings'      => array(
-// 			'page_title'                      => __( 'Instalar plugins necessários', 'wpclean' ),
-// 			'menu_title'                      => __( 'Instalar Plugins', 'wpclean' ),
-// 			'installing'                      => __( 'Instalando Plugin: %s', 'wpclean' ),
-// 			'updating'                        => __( 'Atualizando Plugin: %s', 'wpclean' ),
-// 			'oops'                            => __( 'Algo deu errado com a API do plugin.', 'wpclean' ),
-// 			'notice_can_install_required'     => _n_noop(
-// 				'Este tema requer o seguinte plugin: %1$s.',
-// 				'Este tema requer o seguinte plugins: %1$s.',
-// 				'wpclean'
-// 			),
-// 			'notice_can_install_recommended'  => _n_noop(
-// 				'Este tema recomenda o seguinte plugin: %1$s.',
-// 				'Este tema recomenda os seguintes plugins: %1$s.',
-// 				'wpclean'
-// 			),
-// 			'notice_ask_to_update'            => _n_noop(
-// 				'O plug-in a seguir precisa ser atualizado para sua versão mais recente para garantir compatibilidade máxima com este tema: %1$s.',
-// 				'Os seguintes plugins precisam ser atualizados para sua versão mais recente para garantir compatibilidade máxima com este tema: %1$s.',
-// 				'wpclean'
-// 			),
-// 			'notice_ask_to_update_maybe'      => _n_noop(
-// 				'Há uma atualização disponível para: %1$s.',
-// 				'Há atualizações disponíveis para os seguintes plugins: %1$s.',
-// 				'wpclean'
-// 			),
-// 			'notice_can_activate_required'    => _n_noop(
-// 				'O seguinte Plugin, que é necessário, está inativo: %1$s.',
-// 				'Os seguintes Plugins, que são necessários, estão inativos: %1$s.',
-// 				'wpclean'
-// 			),
-// 			'notice_can_activate_recommended' => _n_noop(
-// 				'O seguinte Plugin, que é recomendado, está inativo: %1$s.',
-// 				'Os seguintes Plugins, que são recomendados, estão inativos: %1$s.',
-// 				'wpclean'
-// 			),
-// 			'install_link'                    => _n_noop(
-// 				'Instalar Plugin',
-// 				'Instalar Plugins',
-// 				'wpclean'
-// 			),
-// 			'update_link' 					  => _n_noop(
-// 				'Atualizar Plugin',
-// 				'Atualizar Plugins',
-// 				'wpclean'
-// 			),
-// 			'activate_link'                   => _n_noop(
-// 				'Ativar Plugin',
-// 				'Ativar Plugins',
-// 				'wpclean'
-// 			),
-// 			'return'                          => __( 'Voltar para instalador de Plugins necessários', 'wpclean' ),
-// 			'plugin_activated'                => __( 'Plugin ativado com sucesso.', 'wpclean' ),
-// 			'activated_successfully'          => __( 'O plugin a seguir foi ativado com sucesso:', 'wpclean' ),
-// 			'plugin_already_active'           => __( 'Nenhuma ação tomada. O Plugin %1$s já está ativo.', 'wpclean' ),
-// 			'plugin_needs_higher_version'     => __( 'Plugin não ativado. Uma versão mais nova de %s é ncessária para este tema. Atualiza o plugin.', 'wpclean' ),
-// 			'complete'                        => __( 'Todos os plugins instalados e ativados com sucesso. %1$s', 'wpclean' ),
-// 			'dismiss'                         => __( 'Descartar essa Notificação', 'wpclean' ),
-// 			'notice_cannot_install_activate'  => __( 'Há um ou mais plugins obrigatórios ou recomendados para instalar, atualizar ou ativar.', 'wpclean' ),
-// 			'contact_admin'                   => __( 'Entre em contato com o administrador deste site para ajuda.', 'wpclean' ),
+function wpclean_register_required_plugins() {
+	$plugins = array(
+		array(
+			'name'      => 'Custom Post Type UI',
+			'slug'      => 'custom-post-type-ui',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'Cloudflare',
+			'slug'      => 'cloudflare',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'reSmush.it Image Optimizer',
+			'slug'      => 'resmushit-image-optimizer',
+			'required'  => false,
+		),
+	);
+	$config = array(
+  'id'           => 'wpclean',                 // Unique ID for hashing notices for multiple instances of TGMPA.
+		'default_path' => '',                      // Default absolute path to bundled plugins.
+		'menu'         => 'tgmpa-install-plugins', // Menu slug.
+		'parent_slug'  => 'plugins.php',            // Parent menu slug.
+		'capability'   => 'manage_options',         // Capability needed to view plugin install page, should be a capability associated with the parent menu used.
+		'has_notices'  => true,                     // Show admin notices or not.
+		'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.
+		'dismiss_msg'  => '',                      // If 'dismissable' is false, this message will be output at top of nag.
+		'is_automatic' => false,                   // Automatically activate plugins after installation or not.
+		'message'      => '',                      // Message to output right before the plugins table.
+		'strings'      => array(
+			'page_title'                      => __( 'Instalar plugins necessários', 'wpclean' ),
+			'menu_title'                      => __( 'Instalar Plugins', 'wpclean' ),
+			'installing'                      => __( 'Instalando Plugin: %s', 'wpclean' ),
+			'updating'                        => __( 'Atualizando Plugin: %s', 'wpclean' ),
+			'oops'                            => __( 'Algo deu errado com a API do plugin.', 'wpclean' ),
+			'notice_can_install_required'     => _n_noop(
+				'Este tema requer o seguinte plugin: %1$s.',
+				'Este tema requer o seguinte plugins: %1$s.',
+				'wpclean'
+			),
+			'notice_can_install_recommended'  => _n_noop(
+				'Este tema recomenda o seguinte plugin: %1$s.',
+				'Este tema recomenda os seguintes plugins: %1$s.',
+				'wpclean'
+			),
+			'notice_ask_to_update'            => _n_noop(
+				'O plug-in a seguir precisa ser atualizado para sua versão mais recente para garantir compatibilidade máxima com este tema: %1$s.',
+				'Os seguintes plugins precisam ser atualizados para sua versão mais recente para garantir compatibilidade máxima com este tema: %1$s.',
+				'wpclean'
+			),
+			'notice_ask_to_update_maybe'      => _n_noop(
+				'Há uma atualização disponível para: %1$s.',
+				'Há atualizações disponíveis para os seguintes plugins: %1$s.',
+				'wpclean'
+			),
+			'notice_can_activate_required'    => _n_noop(
+				'O seguinte Plugin, que é necessário, está inativo: %1$s.',
+				'Os seguintes Plugins, que são necessários, estão inativos: %1$s.',
+				'wpclean'
+			),
+			'notice_can_activate_recommended' => _n_noop(
+				'O seguinte Plugin, que é recomendado, está inativo: %1$s.',
+				'Os seguintes Plugins, que são recomendados, estão inativos: %1$s.',
+				'wpclean'
+			),
+			'install_link'                    => _n_noop(
+				'Instalar Plugin',
+				'Instalar Plugins',
+				'wpclean'
+			),
+			'update_link' 					  => _n_noop(
+				'Atualizar Plugin',
+				'Atualizar Plugins',
+				'wpclean'
+			),
+			'activate_link'                   => _n_noop(
+				'Ativar Plugin',
+				'Ativar Plugins',
+				'wpclean'
+			),
+			'return'                          => __( 'Voltar para instalador de Plugins necessários', 'wpclean' ),
+			'plugin_activated'                => __( 'Plugin ativado com sucesso.', 'wpclean' ),
+			'activated_successfully'          => __( 'O plugin a seguir foi ativado com sucesso:', 'wpclean' ),
+			'plugin_already_active'           => __( 'Nenhuma ação tomada. O Plugin %1$s já está ativo.', 'wpclean' ),
+			'plugin_needs_higher_version'     => __( 'Plugin não ativado. Uma versão mais nova de %s é ncessária para este tema. Atualiza o plugin.', 'wpclean' ),
+			'complete'                        => __( 'Todos os plugins instalados e ativados com sucesso. %1$s', 'wpclean' ),
+			'dismiss'                         => __( 'Descartar essa Notificação', 'wpclean' ),
+			'notice_cannot_install_activate'  => __( 'Há um ou mais plugins obrigatórios ou recomendados para instalar, atualizar ou ativar.', 'wpclean' ),
+			'contact_admin'                   => __( 'Entre em contato com o administrador deste site para ajuda.', 'wpclean' ),
 
-// 			'nag_type'                        => ''
-// 		),
-// 	);
+			'nag_type'                        => ''
+		),
+	);
+	tgmpa( $plugins, $config );
+};
 
-// 	tgmpa( $plugins, $config );
-// }; add_action( 'tgmpa_register', 'wpclean_register_required_plugins' );
+
+// HTML Compression
+class WP_HTML_Compression {
+    // Settings
+    protected $compress_css = true;
+    protected $compress_js = true;
+    protected $info_comment = true;
+    protected $remove_comments = true;
+
+    // Variables
+    protected $html;
+    public function __construct($html) {
+   	 if (!empty($html)) {
+   		 $this->parseHTML($html);
+   	 }
+    }
+    public function __toString() {
+   	 return $this->html;
+    }
+    protected function bottomComment($raw, $compressed) {
+   	 $raw = strlen($raw);
+   	 $compressed = strlen($compressed);
+   	 $savings = ($raw-$compressed) / $raw * 100;
+   	 $savings = round($savings, 2);
+   	//  return '<!--HTML compressed, size saved '.$savings.'%. From '.$raw.' bytes, now '.$compressed.' bytes-->';
+    }
+    protected function minifyHTML($html) {
+   	 $pattern = '/<(?<script>script).*?<\/script\s*>|<(?<style>style).*?<\/style\s*>|<!(?<comment>--).*?-->|<(?<tag>[\/\w.:-]*)(?:".*?"|\'.*?\'|[^\'">]+)*>|(?<text>((<[^!\/\w.:-])?[^<]*)+)|/si';
+   	 preg_match_all($pattern, $html, $matches, PREG_SET_ORDER);
+   	 $overriding = false;
+   	 $raw_tag = false;
+   	 // Variable reused for output
+   	 $html = '';
+   	 foreach ($matches as $token) {
+   		 $tag = (isset($token['tag'])) ? strtolower($token['tag']) : null;
+   		 
+   		 $content = $token[0];
+   		 
+   		 if (is_null($tag)) {
+   			 if ( !empty($token['script']) ) {
+   				 $strip = $this->compress_js;
+   			 }
+   			 else if ( !empty($token['style']) ) {
+   				 $strip = $this->compress_css;
+   			 }
+   			 else if ($content == '<!--wp-html-compression no compression-->') {
+   				 $overriding = !$overriding;
+   				 // Don't print the comment
+   				 continue;
+   			 }
+   			 else if ($this->remove_comments) {
+   				 if (!$overriding && $raw_tag != 'textarea') {
+   					 // Remove any HTML comments, except MSIE conditional comments
+   					 $content = preg_replace('/<!--(?!\s*(?:\[if [^\]]+]|<!|>))(?:(?!-->).)*-->/s', '', $content);
+   				 }
+   			 }
+   		 }
+   		 else {
+   			 if ($tag == 'pre' || $tag == 'textarea') {
+   				 $raw_tag = $tag;
+   			 }
+   			 else if ($tag == '/pre' || $tag == '/textarea') {
+   				 $raw_tag = false;
+   			 }
+   			 else {
+   				 if ($raw_tag || $overriding) {
+   					 $strip = false;
+   				 }
+   				 else {
+   					 $strip = true;
+   					 
+   					 // Remove any empty attributes, except:
+   					 // action, alt, content, src
+   					 $content = preg_replace('/(\s+)(\w++(?<!\baction|\balt|\bcontent|\bsrc)="")/', '$1', $content);
+   					 
+   					 // Remove any space before the end of self-closing XHTML tags
+   					 // JavaScript excluded
+   					 $content = str_replace(' />', '/>', $content);
+   				 }
+   			 }
+   		 }
+   		 
+   		 if ($strip) {
+   			 $content = $this->removeWhiteSpace($content);
+   		 }
+   		 $html .= $content;
+   	 }
+   	 return $html;
+    }
+   	 
+    public function parseHTML($html) {
+   	 $this->html = $this->minifyHTML($html);
+   	 
+   	 if ($this->info_comment) {
+   		 $this->html .= "\n" . $this->bottomComment($html, $this->html);
+   	 }
+    }
+    
+    protected function removeWhiteSpace($str) {
+   	 $str = str_replace("\t", ' ', $str);
+   	 $str = str_replace("\n",  '', $str);
+   	 $str = str_replace("\r",  '', $str);
+   	 
+   	 while (stristr($str, '  ')) {
+   		 $str = str_replace('  ', ' ', $str);
+   	 }
+   	 return $str;
+    }
+}
+function wp_html_compression_finish($html) {
+    return new WP_HTML_Compression($html);
+}
+function wp_html_compression_start() {
+    ob_start('wp_html_compression_finish');
+}
+
+
+// Custom admin.css
+function my_admin_css() {
+  echo '<link rel="stylesheet" href="'.get_stylesheet_directory_uri().'/statics/css/admin.css" type="text/css" media="all" />';
+}
+add_action('admin_head', 'my_admin_css');
+add_action('login_head', 'my_admin_css');
+
+
+// Additional features to allow styling of the templates.
+require get_parent_theme_file_path( '/src/functions.php' );
