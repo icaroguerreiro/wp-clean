@@ -71,14 +71,6 @@ function wpclean_pingback_header() {
 } ;add_action( 'wp_head', 'wpclean_pingback_header' );
 
 
-// Enqueue scripts and styles.
-function wpclean_scripts() {
-	// Load the html5 shiv.
-	wp_enqueue_script( 'html5', get_theme_file_uri( '/assets/js/html5.js' ), array(), '3.7.3' );
-	wp_script_add_data( 'html5', 'conditional', 'lt IE 9' );
-}; add_action( 'wp_enqueue_scripts', 'wpclean_scripts' );
-
-
 // Front Page
 function wpclean_front_page_template( $template ) {
 	return is_home() ? '' : $template;
@@ -127,6 +119,16 @@ function wpclean_register_required_plugins() {
 		array(
 			'name'      => 'reSmush.it Image Optimizer',
 			'slug'      => 'resmushit-image-optimizer',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'Minify HTML',
+			'slug'      => 'minify-html-markup',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'WP Super Cache',
+			'slug'      => 'wp-super-cache',
 			'required'  => false,
 		),
 	);
@@ -201,127 +203,12 @@ function wpclean_register_required_plugins() {
 			'dismiss'                         => __( 'Descartar essa Notificação', 'wpclean' ),
 			'notice_cannot_install_activate'  => __( 'Há um ou mais plugins obrigatórios ou recomendados para instalar, atualizar ou ativar.', 'wpclean' ),
 			'contact_admin'                   => __( 'Entre em contato com o administrador deste site para ajuda.', 'wpclean' ),
+			'skin_update_successful'					=> __( 'aa', 'wpclean' ),
 
 			'nag_type'                        => ''
 		),
 	);
 	tgmpa( $plugins, $config );
-};
-
-
-// HTML Compression
-class WP_HTML_Compression {
-    // Settings
-    protected $compress_css = true;
-    protected $compress_js = true;
-    protected $info_comment = true;
-    protected $remove_comments = true;
-
-    // Variables
-    protected $html;
-    public function __construct($html) {
-   	 if (!empty($html)) {
-   		 $this->parseHTML($html);
-   	 }
-    }
-    public function __toString() {
-   	 return $this->html;
-    }
-    protected function bottomComment($raw, $compressed) {
-   	 $raw = strlen($raw);
-   	 $compressed = strlen($compressed);
-   	 $savings = ($raw-$compressed) / $raw * 100;
-   	 $savings = round($savings, 2);
-   	//  return '<!--HTML compressed, size saved '.$savings.'%. From '.$raw.' bytes, now '.$compressed.' bytes-->';
-    }
-    protected function minifyHTML($html) {
-   	 $pattern = '/<(?<script>script).*?<\/script\s*>|<(?<style>style).*?<\/style\s*>|<!(?<comment>--).*?-->|<(?<tag>[\/\w.:-]*)(?:".*?"|\'.*?\'|[^\'">]+)*>|(?<text>((<[^!\/\w.:-])?[^<]*)+)|/si';
-   	 preg_match_all($pattern, $html, $matches, PREG_SET_ORDER);
-   	 $overriding = false;
-   	 $raw_tag = false;
-   	 // Variable reused for output
-   	 $html = '';
-   	 foreach ($matches as $token) {
-   		 $tag = (isset($token['tag'])) ? strtolower($token['tag']) : null;
-   		 
-   		 $content = $token[0];
-   		 
-   		 if (is_null($tag)) {
-   			 if ( !empty($token['script']) ) {
-   				 $strip = $this->compress_js;
-   			 }
-   			 else if ( !empty($token['style']) ) {
-   				 $strip = $this->compress_css;
-   			 }
-   			 else if ($content == '<!--wp-html-compression no compression-->') {
-   				 $overriding = !$overriding;
-   				 // Don't print the comment
-   				 continue;
-   			 }
-   			 else if ($this->remove_comments) {
-   				 if (!$overriding && $raw_tag != 'textarea') {
-   					 // Remove any HTML comments, except MSIE conditional comments
-   					 $content = preg_replace('/<!--(?!\s*(?:\[if [^\]]+]|<!|>))(?:(?!-->).)*-->/s', '', $content);
-   				 }
-   			 }
-   		 }
-   		 else {
-   			 if ($tag == 'pre' || $tag == 'textarea') {
-   				 $raw_tag = $tag;
-   			 }
-   			 else if ($tag == '/pre' || $tag == '/textarea') {
-   				 $raw_tag = false;
-   			 }
-   			 else {
-   				 if ($raw_tag || $overriding) {
-   					 $strip = false;
-   				 }
-   				 else {
-   					 $strip = true;
-   					 
-   					 // Remove any empty attributes, except:
-   					 // action, alt, content, src
-   					 $content = preg_replace('/(\s+)(\w++(?<!\baction|\balt|\bcontent|\bsrc)="")/', '$1', $content);
-   					 
-   					 // Remove any space before the end of self-closing XHTML tags
-   					 // JavaScript excluded
-   					 $content = str_replace(' />', '/>', $content);
-   				 }
-   			 }
-   		 }
-   		 
-   		 if ($strip) {
-   			 $content = $this->removeWhiteSpace($content);
-   		 }
-   		 $html .= $content;
-   	 }
-   	 return $html;
-    }
-   	 
-    public function parseHTML($html) {
-   	 $this->html = $this->minifyHTML($html);
-   	 
-   	 if ($this->info_comment) {
-   		 $this->html .= "\n" . $this->bottomComment($html, $this->html);
-   	 }
-    }
-    
-    protected function removeWhiteSpace($str) {
-   	 $str = str_replace("\t", ' ', $str);
-   	 $str = str_replace("\n",  '', $str);
-   	 $str = str_replace("\r",  '', $str);
-   	 
-   	 while (stristr($str, '  ')) {
-   		 $str = str_replace('  ', ' ', $str);
-   	 }
-   	 return $str;
-    }
-}
-function wp_html_compression_finish($html) {
-    return new WP_HTML_Compression($html);
-}
-function wp_html_compression_start() {
-    ob_start('wp_html_compression_finish');
 }
 
 
