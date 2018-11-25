@@ -94,7 +94,6 @@ gulp.task('app-watch', () => {
   gulp.watch(['./src/**/*.twig', './src/core/css/critical.sass'], ['browser-reload'])
 })
 
-
 // browser-reload
 gulp.task('browser-reload', () => {
   browsersync.reload();

@@ -5,15 +5,13 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <style> {% include 'statics/css/critical.css' %} </style>
     <title>{{site.title}}</title>
-    <link rel='stylesheet' type='text/css' href='{{theme.link}}/statics/css/style.css' media='screen'>
-    <link rel='shortcut icon' type='image/x-icon' href='{{theme.link}}/statics/img/favicon.png'>
     {{wp_head}}
     {% block head %}{% endblock %}
   </head>
   <body class='{{body_class}}'>
     <div id='wrapper'>
       <header id='header'>
-        {% block header %}{% include 'components/header.twig' %}{% endblock %}
+        {% block header %}{% include 'components/header/header.twig' %}{% endblock %}
       </header>
 
       <div id="content">
@@ -21,11 +19,10 @@
       </div>
 
       <footer id="footer">
-        {% block footer %}{% include 'components/footer.twig' %}{% endblock %}
+        {% block footer %}{% include 'components/footer/footer.twig' %}{% endblock %}
       </footer>
     </div>
     {{wp_footer}}
-    <script type='text/javascript' src='{{theme.link}}/statics/js/bundler.js'></script>
     {% block scripts %}{% endblock %}
   </body>
 </html>

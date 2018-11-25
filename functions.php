@@ -4,7 +4,7 @@
 error_reporting(E_ALL ^ E_WARNING);
 
 // Composer Autoload
-include_once __DIR__ .'/composer/vendor/autoload.php';
+include_once __DIR__.'/composer/vendor/autoload.php';
 
 // Sets up theme defaults and registers features
 function wpclean_setup() {
@@ -258,3 +258,16 @@ function twig_view($type) {
   $context['post'] = new TimberPost();
 	Timber::render($template, $context);
 }
+
+// Include & Assets
+function head_includes() {
+	echo "<link rel='shortcut icon' type='image/x-icon' href='".get_template_directory_uri()."/statics/img/favicon.png'>\n";
+} add_action( 'wp_head', 'head_includes', 0 );
+
+function header_includes() {
+	wp_enqueue_style('style', get_template_directory_uri().'/statics/css/style.css');
+} add_action('wp_enqueue_scripts', 'header_includes');
+
+function footer_includes() {
+  wp_enqueue_script('bundler', get_template_directory_uri().'/statics/js/bundler.js');
+} add_action('wp_footer','footer_includes');
