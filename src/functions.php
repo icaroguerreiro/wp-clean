@@ -1,7 +1,7 @@
 <?php
 
 // Hide PHP Errors
-error_reporting(E_ALL ^ E_WARNING);
+// error_reporting(E_ALL ^ E_WARNING);
 
 // Hide ACF
 // add_filter('acf/settings/show_admin', '__return_false');

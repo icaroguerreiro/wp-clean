@@ -1,7 +1,8 @@
 <?php
-	get_header();
+  $context = Timber::get_context();
+  $post = new TimberPost();
+  $context['post'] = $post;
+  Timber::render('index.twig', $context );
 
-	$template = __DIR__."/src/index.pug";
-	Phug::displayFile($template);
-
-	get_footer();
+  
+ wp_nav_menu( array('menu_main' => 'menu-header'));

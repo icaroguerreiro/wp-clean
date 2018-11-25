@@ -1,4 +1,8 @@
 <?php
+
+// Composer Autoload
+include_once __DIR__ .'/_engine/vendor/autoload.php';
+
 // Sets up theme defaults and registers features
 function wpclean_setup() {
 
@@ -16,8 +20,8 @@ function wpclean_setup() {
 
 	// Menu Locations
 	register_nav_menus( array(
-		'main'    => __( 'Main Menu', 'wpclean' ),
-		'footer' => __( 'Footer Menu', 'wpclean' )
+		'menu-main'    => __( 'Main Menu', 'wpclean' ),
+		'menu-secondary' => __( 'Secondary Menu', 'wpclean' )
 	) );
 
 	// HTML5 Supports for Elements
@@ -46,8 +50,15 @@ function wpclean_setup() {
 	$starter_content = array();
 	$starter_content = apply_filters( 'wpclean_starter_content', $starter_content );
 	add_theme_support( 'starter-content', $starter_content );
-}; add_action( 'after_setup_theme', 'wpclean_setup' );
+} add_action( 'after_setup_theme', 'wpclean_setup' );
 
+// Timber
+$timber = new Timber\Timber();
+function add_to_context( $context ) {
+	$context['menu_main'] = new \Timber\Menu('menu-main');
+	$context['menu_secondary'] = new \Timber\Menu('menu-secondary');
+	return $context;
+} add_filter( 'timber/context', 'add_to_context' );
 
 // [...] Excerpt
 function wpclean_excerpt_more( $link ) {
@@ -70,7 +81,6 @@ function wpclean_pingback_header() {
 	}
 } ;add_action( 'wp_head', 'wpclean_pingback_header' );
 
-
 // Front Page
 function wpclean_front_page_template( $template ) {
 	return is_home() ? '' : $template;
@@ -83,25 +93,18 @@ remove_action('admin_print_scripts','print_emoji_detection_script');
 remove_action('wp_print_styles','print_emoji_styles'); 
 remove_action('admin_print_styles','print_emoji_styles');
 
-// Composer Autoload
-include_once __DIR__ .'/_engine/vendor/autoload.php';
-
-// Phug <3
-use JsPhpize\JsPhpizePhug;
-Phug::addExtension(JsPhpizePhug::class);
-
 // Plugin ACF
+add_filter('acf/settings/path', 'my_acf_settings_path');
 function my_acf_settings_path( $path ) {
-    $path = __DIR__.'/_engine/plugins/acf/';
+    $path = get_template_directory().'/_engine/plugins/acf/';
     return $path;
-}; add_filter(__DIR__.'/_engine/plugins/acf/settings/path', 'my_acf_settings_path');
-
+}
+add_filter('acf/settings/dir', 'my_acf_settings_dir');
 function my_acf_settings_dir( $dir ) {
-    $dir = __DIR__.'/_engine/plugins/acf/';
+    $dir = get_template_directory_uri().'/_engine/plugins/acf/';
     return $dir;
-}; add_filter(__DIR__.'/_engine/plugins/acf/settings/dir', 'my_acf_settings_dir');
-
-include_once(__DIR__.'/_engine/plugins/acf/acf.php');
+}
+include_once( __DIR__.'/_engine/plugins/acf/acf.php');
 
 // Required and Recommended Plugins
 function wpclean_register_required_plugins() {
@@ -130,6 +133,11 @@ function wpclean_register_required_plugins() {
 			'name'      => 'WP Super Cache',
 			'slug'      => 'wp-super-cache',
 			'required'  => false,
+		),
+		array(
+			'name'      => 'Timber',
+			'slug'      => 'timber-library',
+			'required'  => true,
 		),
 	);
 	$config = array(
@@ -211,14 +219,12 @@ function wpclean_register_required_plugins() {
 	tgmpa( $plugins, $config );
 }
 
-
 // Custom admin.css
 function my_admin_css() {
   echo '<link rel="stylesheet" href="'.get_stylesheet_directory_uri().'/statics/css/admin.css" type="text/css" media="all" />';
 }
 add_action('admin_head', 'my_admin_css');
 add_action('login_head', 'my_admin_css');
-
 
 // Additional features to allow styling of the templates.
 require get_parent_theme_file_path( '/src/functions.php' );

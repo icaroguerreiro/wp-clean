@@ -1,7 +1,7 @@
 {
     "require": {
-        "phug/phug": "^0.3.2",
         "js-phpize/js-phpize-phug": "^2.1",
-        "tgmpa/tgm-plugin-activation": "^2.6"
+        "tgmpa/tgm-plugin-activation": "^2.6",
+        "timber/timber": "^1.8"
     }
 }

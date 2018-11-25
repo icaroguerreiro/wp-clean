@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html {{site.language_attributes}}>
+  <head>
+    <meta charset='{{site.charset}}'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style> {% include 'statics/css/critical.css' %} </style>
+    <title>{{site.title}}</title>
+    <link rel='stylesheet' type='text/css' href='{{theme.link}}/statics/css/style.css' media='screen'>
+    {{wp_head}}
+    {% include '_head.twig' %}
+    {% block head %}{% endblock %}
+  </head>
+  <body class='{{body_class}}'>
+    <div id='wrapper'>
+      <header id='header'>
+        {% include 'components/header.twig' %}
+      </header>
+
+      <div id="content">
+        {% block content %}{% endblock %}
+      </div>
+
+      <footer id="footer">
+        {% include 'components/footer.twig' %}
+      </footer>
+    </div>
+    {{wp_footer}}
+    <script type='text/javascript' src='{{theme.link}}/statics/js/bundler.js'></script>
+    {% include '_scripts.twig' %}
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
