@@ -1,5 +1,1 @@
-<?php
-  $context = Timber::get_context();
-  $post = new TimberPost();
-  $context['post'] = $post;
-  Timber::render('404.twig', $context );
+<?php twig_view('404');

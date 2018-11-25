@@ -1,1 +1,1 @@
-<?php
+<?php twig_view('search');

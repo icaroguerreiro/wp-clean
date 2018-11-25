@@ -226,5 +226,29 @@ function my_admin_css() {
 add_action('admin_head', 'my_admin_css');
 add_action('login_head', 'my_admin_css');
 
+// Custom Template for Singles, Pages and Archives
+function twig_view($type) {
+
+	global $post;
+	$template = "${type}.twig";
+
+	if($type == 'single' || $type == 'archive') :
+		$post_label = $post->post_type;
+	elseif($type == 'page') :
+		$post_label = $post->post_name;
+	endif;
+
+	if($post_label) :
+		$custom_template = "${type}-${post_label}.twig";
+		if(file_exists(__DIR__.'/views/'.$custom_template)) {
+			$template = $custom_template;
+		}
+	endif;
+
+	$context = Timber::get_context();
+  $context['post'] = new TimberPost();
+	Timber::render($template, $context);
+}
+
 // Additional features to allow styling of the templates.
 require get_parent_theme_file_path( '/src/functions.php' );
