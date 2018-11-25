@@ -1,7 +1,10 @@
 <?php
 
+// Hide PHP Errors
+error_reporting(E_ALL ^ E_WARNING);
+
 // Composer Autoload
-include_once __DIR__ .'/_engine/vendor/autoload.php';
+include_once __DIR__ .'/composer/vendor/autoload.php';
 
 // Sets up theme defaults and registers features
 function wpclean_setup() {
@@ -54,6 +57,8 @@ function wpclean_setup() {
 
 // Timber
 $timber = new Timber\Timber();
+Timber::$locations = __DIR__.'/src/';
+
 function add_to_context( $context ) {
 	$context['menu_main'] = new \Timber\Menu('menu-main');
 	$context['menu_secondary'] = new \Timber\Menu('menu-secondary');
@@ -96,17 +101,20 @@ remove_action('admin_print_styles','print_emoji_styles');
 // Plugin ACF
 add_filter('acf/settings/path', 'my_acf_settings_path');
 function my_acf_settings_path( $path ) {
-    $path = get_template_directory().'/_engine/plugins/acf/';
+    $path = get_template_directory().'/composer/plugins/acf/';
     return $path;
 }
 add_filter('acf/settings/dir', 'my_acf_settings_dir');
 function my_acf_settings_dir( $dir ) {
-    $dir = get_template_directory_uri().'/_engine/plugins/acf/';
+    $dir = get_template_directory_uri().'/composer/plugins/acf/';
     return $dir;
 }
-include_once( __DIR__.'/_engine/plugins/acf/acf.php');
+include_once( __DIR__.'/composer/plugins/acf/acf.php');
+// add_filter('acf/settings/show_admin', '__return_false');
 
 // Required and Recommended Plugins
+
+add_action('tgmpa_register', 'wpclean_register_required_plugins');
 function wpclean_register_required_plugins() {
 	$plugins = array(
 		array(
@@ -231,6 +239,7 @@ function twig_view($type) {
 
 	global $post;
 	$template = "${type}.twig";
+	$post_label = false;
 
 	if($type == 'single' || $type == 'archive') :
 		$post_label = $post->post_type;
@@ -240,7 +249,7 @@ function twig_view($type) {
 
 	if($post_label) :
 		$custom_template = "${type}-${post_label}.twig";
-		if(file_exists(__DIR__.'/views/'.$custom_template)) {
+		if(file_exists(Timber::$locations.$custom_template)) {
 			$template = $custom_template;
 		}
 	endif;
@@ -249,6 +258,3 @@ function twig_view($type) {
   $context['post'] = new TimberPost();
 	Timber::render($template, $context);
 }
-
-// Additional features to allow styling of the templates.
-require get_parent_theme_file_path( '/src/functions.php' );

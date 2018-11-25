@@ -1,7 +1,7 @@
 # Project
-_engine/node_modules
+node_modules
 package-lock.json
-_engine/vendor
+composer/vendor
 composer.lock
 
 # Yarn
