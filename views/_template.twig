@@ -6,8 +6,8 @@
     <style> {% include 'statics/css/critical.css' %} </style>
     <title>{{site.title}}</title>
     <link rel='stylesheet' type='text/css' href='{{theme.link}}/statics/css/style.css' media='screen'>
+    <link rel='shortcut icon' type='image/x-icon' href='{{theme.link}}/statics/img/favicon.png'>
     {{wp_head}}
-    {% include '_head.twig' %}
     {% block head %}{% endblock %}
   </head>
   <body class='{{body_class}}'>
@@ -26,7 +26,6 @@
     </div>
     {{wp_footer}}
     <script type='text/javascript' src='{{theme.link}}/statics/js/bundler.js'></script>
-    {% include '_scripts.twig' %}
     {% block scripts %}{% endblock %}
   </body>
 </html>
