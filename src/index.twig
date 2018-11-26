@@ -7,6 +7,12 @@
     {{item.get_preview}}
   {% endfor %}
 
+  <p>Eitaaaaaa</p>
+
+  {% for post in testando %}
+    <h2>{{ post.title }}</h2>
+  {% endfor %}
+
   <footer class="pagination">
     {% if pagination.prev %}
       <a href="{{pagination.prev.link}}">Newer</a>

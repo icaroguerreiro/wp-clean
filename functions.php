@@ -58,12 +58,7 @@ function wpclean_setup() {
 // Timber
 $timber = new Timber\Timber();
 Timber::$locations = __DIR__.'/src/';
-
-function add_to_context( $context ) {
-	$context['menu_main'] = new \Timber\Menu('menu-main');
-	$context['menu_secondary'] = new \Timber\Menu('menu-secondary');
-	return $context;
-} add_filter( 'timber/context', 'add_to_context' );
+include_once __DIR__.'/functions_timber.php';
 
 // [...] Excerpt
 function wpclean_excerpt_more( $link ) {
