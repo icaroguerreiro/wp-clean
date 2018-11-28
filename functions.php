@@ -108,7 +108,6 @@ include_once( __DIR__.'/composer/plugins/acf/acf.php');
 // add_filter('acf/settings/show_admin', '__return_false');
 
 // Required and Recommended Plugins
-
 add_action('tgmpa_register', 'wpclean_register_required_plugins');
 function wpclean_register_required_plugins() {
 	$plugins = array(
