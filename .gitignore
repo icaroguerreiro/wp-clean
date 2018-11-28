@@ -2,8 +2,6 @@
 /statics
 /node_modules
 package-lock.json
-composer/vendor
-composer.lock
 
 # Yarn
 yarn-error.log
